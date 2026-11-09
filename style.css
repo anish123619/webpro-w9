@@ -1,60 +1,186 @@
-h1 {
-    position: relative;
-    display: inline-block;
-    margin: 0 0 24px;
-    padding-bottom: 12px;
-    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-    font-size: clamp(2rem, 6vw, 3.6rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+/* webpro-w9: "school notebook" theme (paper by day, chalkboard by night) */
 
-    /* Gradient text */
-    background: linear-gradient(90deg, #1f6f5c, #3fb8a0, #2f6fdb, #1f6f5c);
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-
-    animation: shift 8s ease-in-out infinite;
+:root {
+    --desk: #e6dcc6;
+    --paper: #fbf7ec;
+    --ruled: rgba(52, 104, 178, 0.22);
+    --margin: rgba(214, 69, 65, 0.55);
+    --ink: #1f2430;
+    --muted: #5d6270;
+    --coral: #d6453f;
+    --marker: #ffe27a;
+    --stamp: #b3261e;
+    --green: #2f8f5b;
+    --hole: #e6dcc6;
+    --line: 32px; /* one ruled line */
 }
 
-/* Underline that draws itself in */
-h1::after {
+@media (prefers-color-scheme: dark) {
+    :root {
+        --desk: #121a16;
+        --paper: #1f2b25;
+        --ruled: rgba(255, 255, 255, 0.07);
+        --margin: rgba(255, 140, 140, 0.45);
+        --ink: #eef2ee;
+        --muted: #a9b8ae;
+        --coral: #ff8a80;
+        --marker: rgba(255, 214, 102, 0.35);
+        --stamp: #ffd166;
+        --green: #7fe0a4;
+        --hole: #121a16;
+    }
+}
+
+/* ---------- html: the desk ---------- */
+html {
+    min-height: 100%;
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, 0.35), transparent 60%),
+        var(--desk);
+    font-size: 18px;
+    scrollbar-color: var(--coral) var(--desk);
+    -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+    background: var(--marker);
+    color: #000;
+}
+
+/* ---------- body: the notebook page ---------- */
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 780px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 96px 40px 64px 104px;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0 calc(var(--line) - 1px),
+            var(--ruled) calc(var(--line) - 1px) var(--line)
+        ),
+        var(--paper);
+    background-position: 0 calc(96px - 1px), 0 0;
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: var(--line);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.06),
+        0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* red margin line */
+body::before {
     content: "";
     position: absolute;
-    left: 0;
+    top: 0;
     bottom: 0;
-    width: 100%;
-    height: 4px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #1f6f5c, #3fb8a0);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: draw 0.9s 0.3s ease-out forwards;
+    left: 80px;
+    width: 2px;
+    background: var(--margin);
+    box-shadow: 4px 0 0 var(--margin);
 }
 
-@keyframes shift {
-    0%, 100% { background-position: 0% 50%; }
-    50%      { background-position: 100% 50%; }
+/* binder holes */
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 22px;
+    width: 26px;
+    background: radial-gradient(circle at center, var(--hole) 0 10px, transparent 11px) 0 80px / 26px 200px repeat-y;
+    pointer-events: none;
 }
 
-@keyframes draw {
-    to { transform: scaleX(1); }
+/* ---------- h1: title (shown first via flex order) ---------- */
+h1 {
+    order: -1;
+    margin: 0 0 var(--line);
+    font-size: clamp(2rem, 6.4vw, 2.7rem);
+    font-weight: 700;
+    line-height: calc(var(--line) * 2);
+    letter-spacing: -0.01em;
+    color: var(--ink);
 }
 
-/* Respect "reduce motion" setting */
-@media (prefers-reduced-motion: reduce) {
-    h1 { animation: none; }
-    h1::after { animation: none; transform: scaleX(1); }
+/* marker highlight on the first line (the name) */
+h1::first-line {
+    background: linear-gradient(transparent 58%, var(--marker) 58% 92%, transparent 92%);
+    letter-spacing: -0.01em;
 }
+
+/* little pencil tick before the title */
+h1::before {
+    content: "\270E";
+    margin-right: 10px;
+    color: var(--coral);
+    font-weight: 400;
+}
+
+/* ---------- span: rubber-stamped date ---------- */
 h1 span {
-    display: block;
-    margin-top: 6px;
-    font-size: 0.35em;
-    font-weight: 600;
+    display: inline-block;
+    padding: 0 14px;
+    border: 3px double var(--stamp);
+    border-radius: 6px;
+    color: var(--stamp);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.4em;
+    font-weight: 700;
+    line-height: 2.1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    vertical-align: middle;
+    opacity: 0.88;
+    transform: rotate(-3deg);
+    transform-origin: left center;
+    animation: stamp 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@keyframes stamp {
+    from { opacity: 0; transform: rotate(-12deg) scale(1.9); }
+    to   { opacity: 0.88; transform: rotate(-3deg) scale(1); }
+}
+
+/* ---------- p: typewritten repo log ---------- */
+p {
+    margin: 0;
+    max-width: 34em;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    line-height: var(--line);
+    color: var(--muted);
+}
+
+p::before {
+    content: "REPO LOG \25B8  ";
+    color: var(--coral);
+    font-weight: 700;
     letter-spacing: 0.08em;
-    -webkit-text-fill-color: #5b6b66;
-    color: #5b6b66;
+}
+
+p::after {
+    content: "  \2713";
+    color: var(--green);
+    font-weight: 700;
+}
+
+p::first-line {
+    color: var(--ink);
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 600px) {
+    html { font-size: 16px; }
+    body { padding: 72px 20px 48px 64px; background-position: 0 calc(72px - 1px), 0 0; }
+    body::before { left: 46px; }
+    body::after { left: 8px; width: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    h1 span { animation: none; }
 }
