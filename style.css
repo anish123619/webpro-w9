@@ -1,0 +1,60 @@
+h1 {
+    position: relative;
+    display: inline-block;
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+
+    /* Gradient text */
+    background: linear-gradient(90deg, #1f6f5c, #3fb8a0, #2f6fdb, #1f6f5c);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    animation: shift 8s ease-in-out infinite;
+}
+
+/* Underline that draws itself in */
+h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #1f6f5c, #3fb8a0);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: draw 0.9s 0.3s ease-out forwards;
+}
+
+@keyframes shift {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+
+@keyframes draw {
+    to { transform: scaleX(1); }
+}
+
+/* Respect "reduce motion" setting */
+@media (prefers-reduced-motion: reduce) {
+    h1 { animation: none; }
+    h1::after { animation: none; transform: scaleX(1); }
+}
+h1 span {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.35em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    -webkit-text-fill-color: #5b6b66;
+    color: #5b6b66;
+}
