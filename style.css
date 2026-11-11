@@ -184,3 +184,23 @@ p::first-line {
 @media (prefers-reduced-motion: reduce) {
     h1 span { animation: none; }
 }
+
+a {
+    display: inline-block;
+    padding: 14px;
+    border: 3px double var(--stamp);
+    border-radius: 6px;
+    color: var(--stamp);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 2.1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    vertical-align: middle;
+    opacity: 10;
+    transform: rotate(-3deg);
+    transform-origin: left center;
+    animation: stamp 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+
+}
